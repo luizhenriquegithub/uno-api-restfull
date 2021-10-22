@@ -1,9 +1,12 @@
 package br.net.uno.controller
 
 import br.net.uno.entity.Usuario
-import br.net.uno.repository.UsuarioRepository
+import br.net.uno.exception.ExceptionNotFound
+import br.net.uno.exception.ExceptionResponse
+import br.net.uno.exception.ExceptionSucccess
 import br.net.uno.service.UsuarioService
 import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -11,12 +14,38 @@ import org.springframework.web.bind.annotation.*
 class UsuarioController(private val usuarioService: UsuarioService) {
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    fun create(@RequestBody usuarios: Usuario): Usuario = usuarioService.create(usuarios)
+    fun create(@RequestBody usuario: Usuario): ResponseEntity<Any> {
+       usuarioService.create(usuario)
+        return ResponseEntity(ExceptionSucccess(),HttpStatus.CREATED)
+    }
 
-    @GetMapping("/{idloja}")
-    fun getAll(@PathVariable("idloja") idloja: Int): List<Usuario> {
-        return usuarioService.getAll(idloja)
+    @GetMapping
+    fun findAll(): List<Usuario> {
+        return usuarioService.findAll()
+    }
+
+    @GetMapping("/{id}")
+    fun getById(@PathVariable("id") id: Long): ResponseEntity<Any> {
+        val usuario = usuarioService.getById(id)
+        return if (usuario.isPresent())
+            ResponseEntity(usuario,HttpStatus.OK)
+        else
+            ResponseEntity(ExceptionNotFound(), HttpStatus.NOT_FOUND)
+    }
+
+
+    @DeleteMapping("/{id}")
+    fun delete(@PathVariable id: Long): ResponseEntity<Any> {
+        if (usuarioService.existsById(id)) {
+            usuarioService.delete(id)
+            return ResponseEntity.ok().build()
+        }
+        return ResponseEntity(ExceptionNotFound(),HttpStatus.NOT_FOUND)
+    }
+
+    @PutMapping("/{id}")
+    fun update(@PathVariable id: Long, @RequestBody usuario: Usuario) {
+        usuarioService.update(id, usuario)
     }
 
 

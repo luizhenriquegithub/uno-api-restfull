@@ -13,20 +13,20 @@ data class Usuario(
     val idLoja: Int = 1,
 
     @Column(nullable = false,length = 60)
-    val nome: String,
+    var nome: String,
 
     @Column(nullable = false,length = 15)
-    val celular: String,
+    var celular: String,
 
     @Column(nullable = false,length = 1)
-    val admin: String = "N",
+    var admin: String = "N",
 
     @Column(nullable = false,length = 30)
-    val login: String,
+    var login: String,
 
     @Column(nullable = false, length = 30)
-    val senha: String,
+    var senha: String,
 
     @Column(nullable = false,length = 1)
-    val ativo: String = "S"
+    var ativo: String = "S"
 )
