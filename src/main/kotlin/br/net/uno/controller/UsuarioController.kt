@@ -19,9 +19,9 @@ class UsuarioController(private val usuarioService: UsuarioService) {
         return ResponseEntity(ExceptionSucccess(), HttpStatus.CREATED)
     }
 
-    @GetMapping("/listAll/{id}")
-    fun findAll(@PathVariable("id") id: Int): ResponseEntity<Any> {
-        val list = usuarioService.listar(id)
+    @GetMapping("/listAll/{loja}")
+    fun findAll(@PathVariable("loja") loja: Int): ResponseEntity<Any> {
+        val list = usuarioService.listar(loja)
         return if (!list.isEmpty()) {
             ResponseEntity(list,HttpStatus.OK)
         } else

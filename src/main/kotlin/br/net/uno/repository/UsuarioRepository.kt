@@ -11,15 +11,7 @@ interface UsuarioRepository : JpaRepository<Usuario, Long> {
 
     fun findByLogin(login: String): Usuario?
 
-    @Query(nativeQuery = true,value = "SELECT * FROM usuarios WHERE id_loja = :id")
-    fun listar(@Param("id") id: Int): List<Usuario>
-
-    //fun findByNome(idLoja: Int, nome: String): Usuario?
-
-    //@Query(nativeQuery = true,value = "SELECT * FROM usuarios WHERE id_loja = :id")
-    //fun findAllByIdLoja(@Param("id") id: Int): List<Usuario>
-
-    //@Query("select u from usuarios u")
-    //fun listarUsuarios(): List<Usuario>
+    @Query(nativeQuery = true,value = "SELECT * FROM usuarios WHERE id_loja = :loja")
+    fun listar(@Param("loja") id: Int): List<Usuario>
 
 }

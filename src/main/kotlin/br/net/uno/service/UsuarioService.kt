@@ -17,8 +17,8 @@ open class UsuarioService(private val usuarioRepository: UsuarioRepository) {
         return usuarioRepository.findAll()
     }
 
-    fun listar(id: Int): List<Usuario> {
-        return usuarioRepository.listar(id)
+    fun listar(loja: Int): List<Usuario> {
+        return usuarioRepository.listar(loja)
     }
 
     fun findById(id: Long): Usuario {
