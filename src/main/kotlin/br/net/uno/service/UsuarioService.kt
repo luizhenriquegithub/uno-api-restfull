@@ -17,12 +17,20 @@ open class UsuarioService(private val usuarioRepository: UsuarioRepository) {
         return usuarioRepository.findAll()
     }
 
+    fun listar(id: Int): List<Usuario> {
+        return usuarioRepository.listar(id)
+    }
+
     fun findById(id: Long): Usuario {
         return usuarioRepository.findById(id).get()
     }
 
     fun getById(id: Long): Optional<Usuario> {
         return usuarioRepository.findById(id)
+    }
+
+    fun getByLogin(login: String): Usuario? {
+        return usuarioRepository.findByLogin(login)
     }
 
     fun delete(id: Long) {

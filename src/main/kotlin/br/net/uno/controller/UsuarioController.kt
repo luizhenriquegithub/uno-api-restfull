@@ -15,24 +15,36 @@ class UsuarioController(private val usuarioService: UsuarioService) {
 
     @PostMapping
     fun create(@RequestBody usuario: Usuario): ResponseEntity<Any> {
-       usuarioService.create(usuario)
-        return ResponseEntity(ExceptionSucccess(),HttpStatus.CREATED)
+        usuarioService.create(usuario)
+        return ResponseEntity(ExceptionSucccess(), HttpStatus.CREATED)
     }
 
-    @GetMapping
-    fun findAll(): List<Usuario> {
-        return usuarioService.findAll()
+    @GetMapping("/listAll/{id}")
+    fun findAll(@PathVariable("id") id: Int): ResponseEntity<Any> {
+        val list = usuarioService.listar(id)
+        return if (!list.isEmpty()) {
+            ResponseEntity(list,HttpStatus.OK)
+        } else
+            return ResponseEntity(ExceptionNotFound(),HttpStatus.NOT_FOUND)
     }
 
     @GetMapping("/{id}")
     fun getById(@PathVariable("id") id: Long): ResponseEntity<Any> {
         val usuario = usuarioService.getById(id)
         return if (usuario.isPresent())
-            ResponseEntity(usuario,HttpStatus.OK)
+            ResponseEntity(usuario, HttpStatus.OK)
         else
             ResponseEntity(ExceptionNotFound(), HttpStatus.NOT_FOUND)
     }
 
+    @GetMapping("/login/{login}")
+    fun getByLogin(@PathVariable("login") login: String): ResponseEntity<Any> {
+        val vLogin = usuarioService.getByLogin(login)
+        return if (vLogin != null) {
+            ResponseEntity(vLogin, HttpStatus.OK)
+        } else
+            ResponseEntity(ExceptionNotFound(), HttpStatus.NOT_FOUND)
+    }
 
     @DeleteMapping("/{id}")
     fun delete(@PathVariable id: Long): ResponseEntity<Any> {
@@ -40,7 +52,7 @@ class UsuarioController(private val usuarioService: UsuarioService) {
             usuarioService.delete(id)
             return ResponseEntity.ok().build()
         }
-        return ResponseEntity(ExceptionNotFound(),HttpStatus.NOT_FOUND)
+        return ResponseEntity(ExceptionNotFound(), HttpStatus.NOT_FOUND)
     }
 
     @PutMapping("/{id}")
